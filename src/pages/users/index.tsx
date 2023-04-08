@@ -5,7 +5,7 @@ import { Pagination } from "@/components/Pagination";
 import { Sidebar } from "@/components/Sidebar";
 import { Box, Flex } from "@chakra-ui/react";
 import { RiAddLine } from "react-icons/ri";
-import { users } from "../../data/users";
+import { users } from "../../../data/users";
 
 export default function UserList() {
     return (
