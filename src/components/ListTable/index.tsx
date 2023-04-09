@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Checkbox, Flex, Icon, Table, Tbody, Td, Th, Thead, Tr, Text } from "@chakra-ui/react";
+import { Avatar, Box, Button, Checkbox, Flex, Icon, Table, Tbody, Td, Th, Thead, Tr, Text, useBreakpointValue } from "@chakra-ui/react";
 import { RiPencilLine } from "react-icons/ri";
 
 interface User {
@@ -11,30 +11,39 @@ interface User {
 
 interface ListTableProps{
     users: User[];
-    fields: string[];
 }
 
-export function ListTable({ users, fields }: ListTableProps) {
+export function ListTable({ users }: ListTableProps) {    
+    const isWideVersion = useBreakpointValue({
+        base: false,
+        lg: true
+    })
+
     return (
         <Table colorScheme="whiteAlpha">
             <Thead>
                 <Tr>
-                    <Th px="6" color="gray.300" width="8">
-                        <Checkbox colorScheme="pink" />
-                    </Th>
+                    { isWideVersion && (
+                        <Th px={["4", "4", "6"]} color="gray.300" width="8">
+                            <Checkbox colorScheme="pink" />
+                        </Th>
+                    ) }
                     <Th width="4" px="4" pr="0"></Th>
-                    {fields.map(field => (
-                        <Th key={field}>{field}</Th>
-                    ))}
-                    <Th width="8"></Th>
+                    <Th>Lista de usuários</Th>
+                    { isWideVersion && (
+                        <Th>Data de cadastro</Th>
+                    ) }
+                    <Th width={["4", "8"]}></Th>
                 </Tr>
             </Thead>
             <Tbody>
                 { users.map(user => (
                     <Tr key={user.id}>
-                        <Td px="6">
-                            <Checkbox colorScheme="pink" />
-                        </Td>
+                        { isWideVersion && (
+                            <Td px={["4", "4", "6"]}>
+                                <Checkbox colorScheme="pink" />
+                            </Td>
+                        ) }
                         <Td width="4" px="4" pr="0">
                             <Box>
                                 <Avatar size="sm" name={user.name} src={user.avatar ?? user.avatar}/>
@@ -46,11 +55,17 @@ export function ListTable({ users, fields }: ListTableProps) {
                                 <Text fontSize="sm" color="gray.300">{user.email}</Text>
                             </Box>
                         </Td>
-                        <Td color="gray.300">{user.createdAt}</Td>
-                        <Td>
-                            <Button as="a" size="sm" fontSize="sm" colorScheme="purple" leftIcon={<Icon as={RiPencilLine} fontSize="16" />}>
-                                Editar
-                            </Button>
+                            { isWideVersion && (
+                                <Td color="gray.300">{user.createdAt}</Td>
+                            ) }
+                        <Td width={["4", "8"]}>
+                            { isWideVersion ? (
+                                <Button as="a" size="sm" fontSize="sm" colorScheme="purple" leftIcon={<Icon as={RiPencilLine} fontSize="16" />}>
+                                    Editar
+                                </Button>
+                            ) : (
+                                <Button as="a" size="sm" fontSize="sm" colorScheme="purple" pr="1" leftIcon={<Icon as={RiPencilLine} fontSize="16" />} />
+                            )}
                         </Td>
                     </Tr>
                 ))}

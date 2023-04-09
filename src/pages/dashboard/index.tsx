@@ -13,18 +13,18 @@ export default function Dashboard() {
   return (
     <Flex direction="column" h="100vh">
         <Header />
-        <Flex w="100%" my="6" maxWidth={1480} mx="auto" px="6">
+        <Flex w="100%" my="6" maxWidth={1480} mx="auto" px={["4", "6"]}>
             <Sidebar />
 
             <SimpleGrid flex="1" gap="4" minChildWidth="320px" alignItems="flex-start">
-                <Box bg="gray.800" p="8" borderRadius={8}>
+                <Box bg="gray.800" p={["4", "8"]} borderRadius={8}>
                     <Text fontSize="lg" mb="4">
                         Inscritos da semana
                     </Text>
                     <Chart type="area" height={160} options={options1} series={series1} />
 
                 </Box>
-                <Box bg="gray.800" p="8" borderRadius={8}>
+                <Box bg="gray.800" p={["4", "8"]} borderRadius={8}>
                     <Text fontSize="lg" mb="4">
                         Taxa de abertura
                     </Text>
