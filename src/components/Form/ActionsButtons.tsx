@@ -8,6 +8,7 @@ interface ActionsButtonsProps extends ButtonProps {
     btnSaveText: string,
     btnSaveHref: string,
     btnSaveColorScheme?: string,
+    btnSaveIsLoading?: boolean,
 }
 
 export function ActionsButtons({ 
@@ -16,7 +17,8 @@ export function ActionsButtons({
     btnCancelColorScheme,
     btnSaveText,
     btnSaveHref,
-    btnSaveColorScheme
+    btnSaveColorScheme,
+    btnSaveIsLoading = false,
 }: ActionsButtonsProps ) {
     return (
         <Flex mt="8" justify="flex-end">
@@ -29,11 +31,13 @@ export function ActionsButtons({
                 >
                     {btnCancelText}
                 </Button>
-                <Button as="a" 
+                <Button
+                    type="submit"
                     size="sm" 
                     fontSize="sm" 
                     colorScheme={ btnSaveColorScheme || "pink" }
                     href={btnSaveHref}
+                    isLoading={btnSaveIsLoading}
                 >
                     {btnSaveText}
                 </Button>
