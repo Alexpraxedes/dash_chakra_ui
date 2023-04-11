@@ -1,5 +1,5 @@
 import { Avatar, AvatarBadge, Box, Flex, Text } from "@chakra-ui/react";
-import { user } from "../../../data/users";
+import { user } from "../../services/data/loggedInUser";
 
 interface ProfileProps {
     showProfileData?: boolean;

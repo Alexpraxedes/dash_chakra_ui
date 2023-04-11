@@ -1,13 +1,17 @@
+import { useState } from "react";
 import { Header } from "@/components/Header";
 import { Heading } from "@/components/Heading";
 import { ListTable } from "@/components/ListTable";
 import { Pagination } from "@/components/Pagination";
 import { Sidebar } from "@/components/Sidebar";
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, Spinner, Text } from "@chakra-ui/react";
 import { RiAddLine } from "react-icons/ri";
-import { users as listUsers } from "../../../data/users";
+import { useUsers } from "@/services/hooks/users/useUsers";
 
-export default function UserList() {    
+export default function UserList() {   
+    const [ page, setPage ] = useState(1);
+    const { data, isLoading, isFetching, error } = useUsers(page);
+
     return (
         <Flex direction="column" h="100vh">
             <Header />
@@ -20,12 +24,29 @@ export default function UserList() {
                         btnIcon={RiAddLine}
                         btnText="Criar novo"
                         btnHref="/users/create"
+                        isLoading={isLoading}
+                        isFetching={isFetching}
                     />
 
-                    <ListTable 
-                        users={ listUsers }
-                    />
-                    <Pagination />
+                    { isLoading ? (
+                        <Flex justify="center" mt="8">
+                            <Spinner />
+                        </Flex>
+                        ) : error ? (
+                            <Flex justify="center" mt="8">
+                                <Text>Falha ao obter dados dos usuários!</Text> 
+                            </Flex>
+                        ) : (
+                            <>
+                                <ListTable users={ data.users } />
+                                <Pagination
+                                    totalCountOfRegisters={ data.totalCount }
+                                    currentPage={page}
+                                    onPageChange={setPage}
+                                />
+                            </>
+                        )
+                    }
                 </Box>                    
             </Flex>
         </Flex>

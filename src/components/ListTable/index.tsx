@@ -1,5 +1,7 @@
-import { Avatar, Box, Button, Checkbox, Flex, Icon, Table, Tbody, Td, Th, Thead, Tr, Text, useBreakpointValue } from "@chakra-ui/react";
+import { Avatar, Box, Button, Checkbox, Flex, Icon, Table, Tbody, Td, Th, Thead, Tr, Text, useBreakpointValue, Link } from "@chakra-ui/react";
+import { queryClient } from "@/services/queryClient";
 import { RiPencilLine } from "react-icons/ri";
+import { api } from "@/services/api";
 
 interface User {
     id: string;
@@ -18,6 +20,16 @@ export function ListTable({ users }: ListTableProps) {
         base: false,
         lg: true
     })
+
+    async function handlePrefetchUser(userId: string) {
+        await queryClient.prefetchQuery(['user', userId], async () => {
+            const response = await api.get(`users/${userId}`);
+
+            return response.data;
+        }, {
+            staleTime: 1000 * 60 * 10, // 10 minutes
+        })
+    }
 
     return (
         <Table colorScheme="whiteAlpha">
@@ -51,7 +63,9 @@ export function ListTable({ users }: ListTableProps) {
                         </Td>
                         <Td>
                             <Box>
-                                <Text fontWeight="bold">{user.name}</Text>
+                                <Link color="purple.400" onMouseEnter={() => handlePrefetchUser(user.id)}>
+                                    <Text fontWeight="bold">{user.name}</Text>
+                                </Link>
                                 <Text fontSize="sm" color="gray.300">{user.email}</Text>
                             </Box>
                         </Td>
