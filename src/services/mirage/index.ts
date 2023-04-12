@@ -9,7 +9,11 @@ type User = {
 }
 
 export function makeServer() {
-    const server = createServer({        
+    const server = createServer({  
+        serializers: {
+            application: ActiveModelSerializer,
+        },
+        
         models: {
             user: Model.extend<Partial<User>>({})
         },
@@ -41,6 +45,7 @@ export function makeServer() {
 
             this.get('/users', function (schema, request) {
                 const { page = 1, per_page = 10 } = request.queryParams;
+                //@ts-ignore
                 const total = schema.all('user').length;
                 const pageStart = (Number(page) - 1) * Number(per_page);
                 const pageEnd = pageStart + Number(per_page);
@@ -51,7 +56,7 @@ export function makeServer() {
                 return new Response(
                     200,
                     { 'x-total-count': String(total) },
-                    { users: users.slice(pageStart, pageEnd) }
+                    { users }
                 );
             });
             this.get('/users/:id');

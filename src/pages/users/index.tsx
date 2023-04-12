@@ -38,9 +38,9 @@ export default function UserList() {
                             </Flex>
                         ) : (
                             <>
-                                <ListTable users={ data.users } />
+                                <ListTable users={ data?.users ?? [] } />
                                 <Pagination
-                                    totalCountOfRegisters={ data.totalCount }
+                                    totalCountOfRegisters={ data?.totalCount ?? 1 }
                                     currentPage={page}
                                     onPageChange={setPage}
                                 />
